@@ -59,11 +59,3 @@ def findTypos(tst, text):
     words = set(text.split())
     typos = [word for word in words if not tst.search(word)]
     return typos
-
-def main():
-    tst = TST()
-    loadDictionary(tst, "dictionary.txt")
-
-
-if __name__ == "__main__":
-    main()
