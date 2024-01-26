@@ -64,10 +64,6 @@ def main():
     tst = TST()
     loadDictionary(tst, "dictionary.txt")
 
-    with open('input.txt') as f: input_text = f.read()
-    typos = findTypos(tst, input_text)
-    print(typos)
 
 if __name__ == "__main__":
     main()
-
