@@ -3,13 +3,11 @@ from pydantic import BaseModel
 
 from main import TST, findTypos, loadDictionary
 
-
 class Text(BaseModel):
     text: str
 
 app = FastAPI()
 tst = TST()
-
 
 @app.on_event("startup")
 async def startup_event():
