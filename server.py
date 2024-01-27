@@ -16,3 +16,7 @@ async def startup_event():
 @app.post("/api/typo-check/")
 async def post(body: Text):
     return findTypos(tst, body.text)
+
+@app.get("/")
+async def home():
+    return "check out https://typo.kenin.dev/docs"
