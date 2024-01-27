@@ -1,0 +1,12 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  script:
+    - docker compose up --build -d
+  only:
+    - master
+  environment:
+    name: production
+    url: https://typo.kenin.dev
