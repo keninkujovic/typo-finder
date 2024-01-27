@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   typo:
     build:
@@ -13,6 +13,13 @@ services:
       - "traefik.http.services.typo.loadbalancer.server.port=8000"
     networks:
       - traefik_default
+
+    redis:
+      image: redis:6.2-alpine
+      restart: always
+      command: redis-server --save 60 1 --loglevel warning
+      volumes:
+        - redis-data:/data
 
 networks:
   traefik_default:
