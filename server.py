@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from fastapi.responses import HTMLResponse
 
 from main import TST, findTypos, loadDictionary
 
@@ -19,4 +20,6 @@ async def post(body: Text):
 
 @app.get("/")
 async def home():
-    return "check out https://typo.kenin.dev/docs"
+    with open("index.html", "r") as file:
+            html_content = file.read()
+    return HTMLResponse(content=html_content)
