@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  typo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NAME=production
+      - URL=https://typo.kenin.dev
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.typo.rule=Host(`typo.kenin.dev`)"
+      - "traefik.http.services.typo.loadbalancer.server.port=8000"
+    networks:
+      - traefik_default
+
+networks:
+  traefik_default:
+    external: true
