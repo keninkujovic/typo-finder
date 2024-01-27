@@ -1,24 +1,26 @@
-import aioredis
+import redis
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.concurrency import run_in_threadpool
 
 from main import TST, findTypos, loadDictionary
 
-redis = aioredis.from_url("redis://redis", encoding="utf-8", decode_responses=True)
+Redis = redis.Redis(host="redis", decode_responses=True)
 
 class CounterMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         response = await call_next(request)
-        response = await call_next(request)
-        await redis.incr("total_api_calls")
+        if request.url.path == "/api/typo-check/":
+            await run_in_threadpool(Redis.incr, "total_api_calls")
         return response
 
 class Text(BaseModel):
     text: str
 
 app = FastAPI()
+api_router = FastAPI()
 tst = TST()
 
 app.add_middleware(CounterMiddleware)
@@ -29,7 +31,7 @@ async def startup_event():
 
 @app.get("/total-calls/")
 async def total_calls():
-    return await redis.get("total_api_calls")
+    return await run_in_threadpool(Redis.get, "total_api_calls")
 
 @app.post("/api/typo-check/")
 async def post(body: Text):

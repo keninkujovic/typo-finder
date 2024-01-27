@@ -12,7 +12,10 @@ services:
       - "traefik.http.routers.typo.rule=Host(`typo.kenin.dev`)"
       - "traefik.http.services.typo.loadbalancer.server.port=8000"
     networks:
+      - redis
       - traefik_default
+    depends_on:
+      - redis
 
   redis:
     image: redis:6.2-alpine
@@ -20,6 +23,8 @@ services:
     command: redis-server --save 60 1 --loglevel warning
     volumes:
       - redis-data:/data
+    networks:
+      - redis
 
 volumes:
   redis-data:
@@ -27,3 +32,4 @@ volumes:
 networks:
   traefik_default:
     external: true
+  redis:
