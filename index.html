@@ -24,8 +24,10 @@
             class="flex w-full items-center justify-start gap-8 px-4 py-4 md:px-8"
         >
             <div class="flex h-6 grow items-center gap-8">
-                <div class="font-medium text-zinc-800">Features</div>
-                <div class="font-medium text-zinc-800">Contact</div>
+                <div class="font-medium text-zinc-800">Demo</div>
+                <a href="contact"
+                    ><div class="font-medium text-zinc-800">Contact</div></a
+                >
             </div>
 
             <a href="docs">
@@ -47,7 +49,7 @@
         <div
             class="mx-auto max-w-[80%] text-center font-['Inter'] text-6xl font-bold leading-normal"
         >
-            Find your Typos for Free
+            Find Typos for Free
         </div>
         <div
             class="mx-auto max-w-[50%] text-center font-['Inter'] text-base font-normal leading-normal text-zinc-700"
@@ -79,6 +81,30 @@
             <div class="text-gray-500">Response Time</div>
         </div>
     </div>
+
+    <div
+        class="mx-auto mt-[30%] max-w-[80%] text-center font-['Inter'] text-6xl font-bold leading-normal"
+    >
+        Try it out!
+    </div>
+
+    <div class="mt-[0%] flex h-screen items-center justify-center">
+        <div class="w-96">
+            <div class="relative w-full min-w-[200px]">
+                <textarea
+                    contenteditable="true"
+                    id="demoText"
+                    class="border-blue-gray-200 text-blue-gray-700 placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 disabled:bg-blue-gray-50 peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-t-transparent bg-transparent bg-white px-3 py-2.5 font-sans text-sm font-normal outline outline-0 transition-all placeholder-shown:border focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0"
+                    placeholder=" "
+                ></textarea>
+                <label
+                    class="before:content[' '] after:content[' '] text-blue-gray-400 before:border-blue-gray-200 after:border-blue-gray-200 peer-placeholder-shown:text-blue-gray-500 peer-disabled:peer-placeholder-shown:text-blue-gray-500 pointer-events-none absolute -top-1.5 left-0 flex h-full w-full select-none text-[11px] font-normal leading-tight transition-all before:pointer-events-none before:mr-1 before:mt-[6.5px] before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-l before:border-t before:transition-all after:pointer-events-none after:ml-1 after:mt-[6.5px] after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-r after:border-t after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-l-2 peer-focus:before:border-t-2 peer-focus:before:border-gray-900 peer-focus:after:border-r-2 peer-focus:after:border-t-2 peer-focus:after:border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent"
+                >
+                    Demo
+                </label>
+            </div>
+        </div>
+    </div>
 </body>
 <script>
     async function fetchTotalCalls() {
@@ -91,5 +117,49 @@
         }
     }
 
+    function setDemoText() {
+        const demoText =
+            "Thsi is an example text with some mistaks to demonstrate the capabilitis of our typo-checking API. In this text, we wil include a few comon errrors such as misspelled words, incorrect grammer, and punctuation mistakes. It's an opportunity to sheowcase how effective the API is at identifying and sugesting corrections for these errrors.";
+
+        document.getElementById("demoText").value = demoText;
+    }
+
+    async function checkDemoText() {
+        const demoText = document.getElementById("demoText").innerText;
+        console.log(demoText);
+
+        try {
+            const response = await fetch(
+                "https://typo.kenin.dev/api/typo-check/",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ text: demoText }),
+                },
+            );
+
+            const data = await response.json();
+            highlightTypos(demoText, data);
+        } catch (error) {
+            console.error("Error fetching total calls:", error);
+        }
+    }
+
+    function highlightTypos(text, typos) {
+        let highlightedText = text;
+        typos.forEach((typo) => {
+            const regex = new RegExp(`\\b${typo}\\b`, "gi");
+            highlightedText = highlightedText.replace(
+                regex,
+                `<span style="text-decoration: underline; text-decoration-color: red;">${typo}</span>`,
+            );
+        });
+
+        document.getElementById("demoText").innerHTML = highlightedText;
+    }
+
+    setDemoText();
     fetchTotalCalls();
 </script>
