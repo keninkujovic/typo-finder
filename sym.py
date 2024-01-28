@@ -1,13 +1,18 @@
 from symspellpy import SymSpell, Verbosity
 
 
-def findTypos(sym_spell, input_term, max_suggestions=3):
-    suggestions = sym_spell.lookup(input_term, Verbosity.CLOSEST)
+def findTypos(sym_spell, text, max_suggestions_per_word=3):
+    unique_words = set(text.split())
 
-    suggestions.sort(key=lambda x: x.distance)
+    corrected_text = []
 
-    top_suggestions = suggestions[:max_suggestions]
+    for word in unique_words:
+        suggestions = sym_spell.lookup(word, Verbosity.CLOSEST)
 
-    recommended_words = [suggestion.term for suggestion in top_suggestions]
+        suggestions = suggestions[:max_suggestions_per_word]
 
-    return recommended_words
+        corrected_words = set(suggestion.term for suggestion in suggestions)
+
+        corrected_text.append(corrected_words)
+
+    return corrected_text
