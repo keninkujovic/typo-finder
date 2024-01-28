@@ -27,6 +27,7 @@ app.add_middleware(CounterMiddleware)
 
 @app.on_event("startup")
 async def startup_event():
+    global sym_spell
     sym_spell = SymSpell()
     dictionary_path = "words.txt"
     sym_spell.create_dictionary(dictionary_path)
@@ -36,7 +37,7 @@ async def total_calls():
     return await run_in_threadpool(Redis.get, "total_api_calls")
 
 @app.post("/api/typo-check/")
-async def post(body: Text, sym_spell):
+async def post(body: Text):
     recommendations = findTypos(sym_spell, body.text, max_suggestions=3)
 
 @app.get("/")
