@@ -1,3 +1,6 @@
+import re
+from typing import List
+
 class TSTNode:
     def __init__(self, char):
         self.character = char
@@ -55,7 +58,8 @@ def loadDictionary(tst, filename):
             word = line.strip()
             tst.insert(word)
 
-def findTypos(tst, text):
-    words = set(text.split())
+def findTypos(tst, text: str) -> List[str]:
+    cleaned_text = re.sub(r'[^\w\s]', '', text)
+    words = set(cleaned_text.split())
     typos = [word for word in words if not tst.search(word)]
     return typos
