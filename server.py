@@ -38,6 +38,7 @@ async def total_calls():
 
 @app.post("/api/typo-check/")
 async def post(body: Text):
+    print(sym_spell.words)
     return findTypos(sym_spell, body.text, max_suggestions=3)
 
 @app.get("/")
