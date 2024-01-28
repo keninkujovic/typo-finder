@@ -2,10 +2,11 @@ import redis
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.concurrency import run_in_threadpool
+from starlette.middleware.base import BaseHTTPMiddleware
+from symspellpy import SymSpell
 
-from main import TST, findTypos, loadDictionary
+from sym import findTypos
 
 Redis = redis.Redis(host="redis", decode_responses=True)
 
@@ -21,21 +22,22 @@ class Text(BaseModel):
 
 app = FastAPI()
 api_router = FastAPI()
-tst = TST()
 
 app.add_middleware(CounterMiddleware)
 
 @app.on_event("startup")
 async def startup_event():
-    loadDictionary(tst, "dictionary.txt")
+    sym_spell = SymSpell()
+    dictionary_path = "words.txt"
+    sym_spell.create_dictionary(dictionary_path)
 
 @app.get("/total-calls/")
 async def total_calls():
     return await run_in_threadpool(Redis.get, "total_api_calls")
 
 @app.post("/api/typo-check/")
-async def post(body: Text):
-    return findTypos(tst, body.text)
+async def post(body: Text, sym_spell):
+    recommendations = findTypos(sym_spell, body.text, max_suggestions=3)
 
 @app.get("/")
 async def home():
