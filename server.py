@@ -38,7 +38,7 @@ async def total_calls():
 
 @app.post("/api/typo-check/")
 async def post(body: Text):
-    recommendations = findTypos(sym_spell, body.text, max_suggestions=3)
+    return findTypos(sym_spell, body.text, max_suggestions=3)
 
 @app.get("/")
 async def home():
