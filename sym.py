@@ -13,6 +13,6 @@ def findTypos(sym_spell, text, max_suggestions=3):
 
             corrected_words = set(suggestion.term for suggestion in suggestions)
 
-            corrected_text.append(corrected_words)
+            corrected_text[word].append(corrected_words)
 
         return corrected_text
