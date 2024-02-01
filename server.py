@@ -46,3 +46,9 @@ async def home():
     with open("index.html", "r") as file:
             html_content = file.read()
     return HTMLResponse(content=html_content)
+
+@app.get("/contact/")
+async def contact():
+    with open("contact.html", "r") as file:
+            html_content = file.read()
+    return HTMLResponse(content=html_content)

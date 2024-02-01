@@ -1,0 +1,82 @@
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css?family=Inter"
+        rel="stylesheet"
+    />
+</head>
+<style>
+    body {
+        font-family: "Inter";
+        height: 100vh;
+        background-color: rgb(229, 229, 229);
+        background-image: radial-gradient(
+                at 76% 31%,
+                rgb(165, 243, 252) 0,
+                transparent 38%
+            ),
+            radial-gradient(at 30% 83%, rgb(187, 247, 208) 0, transparent 58%);
+    }
+
+    .link-underline {
+        border-bottom-width: 0;
+        background-image: linear-gradient(transparent, transparent),
+            linear-gradient(#fff, #fff);
+        background-size: 0 3px;
+        background-position: 0 100%;
+        background-repeat: no-repeat;
+        transition: background-size 0.5s ease-in-out;
+    }
+
+    .link-underline-black {
+        background-image: linear-gradient(transparent, transparent),
+            linear-gradient(#b4f0f7, #c8f1d7);
+    }
+
+    .link-underline:hover {
+        background-size: 100% 3px;
+        background-position: 0 100%;
+    }
+</style>
+
+<body>
+    <nav class="flex w-full flex-col items-center justify-start">
+        <div
+            class="flex w-full items-center justify-start gap-8 px-4 py-4 md:px-8"
+        >
+            <div class="flex h-6 grow items-center gap-8">
+                <a href="/">
+                    <div class="font-medium text-zinc-800">Home</div>
+                </a>
+                <a href="/#demo">
+                    <div class="font-medium text-zinc-800">Demo</div>
+                </a>
+            </div>
+
+            <a href="/docs">
+                <div
+                    class="rounded-lg bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white shadow"
+                >
+                    Docs
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <div
+        class="mx-auto mt-[10%] flex w-1/2 items-center justify-around rounded-lg bg-white p-6 shadow"
+    >
+        <div class="text-center">
+            <div id="totalCalls" class="text-2xl font-semibold text-gray-800">
+                <div>
+                    For more details and inquiries, reach out at
+                    <a
+                        class="link link-underline link-underline-black text-black"
+                        href="mailto:mail@kenin.dev?subject=Inquiry from typo.kenin.dev&body=Hello Kenin, I'm contacting you via typo.kenin.dev"
+                        >mail@kenin.dev</a
+                    >.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
